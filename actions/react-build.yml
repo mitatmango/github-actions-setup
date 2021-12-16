@@ -1,63 +1,63 @@
-    # react-build.yml
+# react-build.yml
 
-    name: React App Build
+name: React App Build
 
-    on:
-        pull_request:
-            types: [ closed ]
-            branches: [ development ]
-            paths:
-            - public/react-app/** 
-            # Changes of these files will trigger the workflow
+on:
+  pull_request:
+    types: [closed]
+    branches: [development]
+    paths:
+      - public/react-app/**
+    # Changes of these files will trigger the workflow
 
-    jobs:
-        build:
-            runs-on: self-hosted
-            if: github.event.pull_request.merged == true
-            env:
-                CI: false
+jobs:
+  build:
+    runs-on: self-hosted
+    if: github.event.pull_request.merged == true
+    env:
+      CI: false
 
-            steps:
-              - uses: actions/checkout@v2
-              - name: Use Node.js 12.x
-                  uses: actions/setup-node@v1
-                  with:
-                      node-version: 12.x
-                      cache: 'npm'
-              - name: Install dependencies
-                  run: npm install
-                  working-directory: public/react-app
-              
-              - name: Build
-                  run: npm run build:production
-                  working-directory: public/react-app
-              
-              - name: Add & Commit
-                  uses: EndBug/add-and-commit@v7.5.0
-                  with:
-                      # The arguments for the `git add` command (see the paragraph below for more info)
-                      # Default: '.'
-                      add: 'public/react-app/build'
-                    
-                      # Determines the way the action fills missing author name and email. Three options are available:
-                      # - github_actor -> UserName <UserName@users.noreply.github.com>
-                      # - user_info -> Your Display Name <your-actual@email.com>
-                      # - github_actions -> github-actions <email associated with the github logo>
-                      # Default: github_actor
-                      default_author: github_actor
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+        working-directory: public/react-app
 
-                      # The message for the commit.
-                      # Default: 'Commit from GitHub Actions (name of the workflow)'
-                      message: 'React Build'
-                      
-                      # The name of the branch to use, if different from the one that triggered the workflow.
-                      # Default: the branch that triggered the run
-                      branch: development
-        qa-push:
-            runs-on: self-hosted
-            needs: [build]
-            steps:
-              - name: Invoke deployment
-                uses: wei/curl@master
-                with:
-                    args: http://link-to-deployment-server.com
+      - name: Build
+        run: npm run build:production
+        working-directory: public/react-app
+
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v7.5.0
+        with:
+          # The arguments for the `git add` command (see the paragraph below for more info)
+          # Default: '.'
+          add: 'public/react-app/build'
+
+          # Determines the way the action fills missing author name and email. Three options are available:
+          # - github_actor -> UserName <UserName@users.noreply.github.com>
+          # - user_info -> Your Display Name <your-actual@email.com>
+          # - github_actions -> github-actions <email associated with the github logo>
+          # Default: github_actor
+          default_author: github_actor
+
+          # The message for the commit.
+          # Default: 'Commit from GitHub Actions (name of the workflow)'
+          message: 'React Build'
+
+          # The name of the branch to use, if different from the one that triggered the workflow.
+          # Default: the branch that triggered the run
+          branch: development
+  qa-push:
+    runs-on: self-hosted
+    needs: [build]
+    steps:
+      - name: Invoke deployment
+        uses: wei/curl@master
+        with:
+          args: http://link-to-deployment-server.com
