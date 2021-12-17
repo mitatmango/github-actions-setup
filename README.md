@@ -42,7 +42,7 @@ By default GitHub actions are enabled on any new repo. You can create and access
 
 ## NPM Build Action
 
-This action will build webpack packages and push directly onto the `development` branch. These packaged include:
+This action will build webpack packages and push directly onto the `development` branch. These packages include:
 * react-app
 * es6-webpack
 * new-react-app
@@ -85,8 +85,8 @@ This action will build webpack packages and push directly onto the `development`
               - name: Use Node.js 12.x
                 uses: actions/setup-node@v1
                 with:
-                node-version: 12.x
-                cache: 'npm'
+                    node-version: 12.x
+                    cache: 'npm'
 
               - name: Install dependencies
                 run: npm install
