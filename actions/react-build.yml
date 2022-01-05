@@ -7,7 +7,7 @@ on:
     types: [closed]
     branches: [development]
     paths:
-      - public/react-app/**
+      -**/*.js
     # Changes of these files will trigger the workflow
 
 jobs:
